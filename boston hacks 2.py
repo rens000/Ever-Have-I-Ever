@@ -47,18 +47,7 @@ def get_num_players():
         rect.center = screen.get_rect().center
         screen.blit(block, rect)
         pygame.display.flip()
-    return num
-
-
-
-    text = font.render('How many players do you have?', True, blue, white) 
-    textRect = text.get_rect()  
-    textRect.center = (x // 2, y // 2.5)
-    screen.fill(white) 
-    screen.blit(text, textRect)
-    pygame.display.update()
-    
-
+    return int(num)
 
 def display_name_question(player_number):
     text = font.render('Player ' + str(player_number) + ': What is your name?', True, blue, white)
@@ -104,29 +93,90 @@ def get_names_question(player_number):
 def get_names():
     player_number = 1
     list_of_names= []
-    num_players = int(get_num_players())
     screen.fill(white)
     pygame.display.update()
-    for i in range(num_players):
+    for i in range(num):
         
         name = get_names_question(player_number)
         list_of_names.append(name)
         player_number += 1
         
     return list_of_names
-        
-def names_display():
-    screen.fill(white)
+
+
+def display_prompt(name):
+    text = font.render("It's your turn " + name + "!", True, blue, white) 
+    textRect = text.get_rect()  
+    textRect.center = (x // 2, y // 2.5)
+    screen.fill(white) 
+    screen.blit(text, textRect)
     pygame.display.update()
-    names = get_names()
     
+def get_question(name):
+    display_prompt(name)
+    prompt = ""
+    check = True
+    while check:
+        for evt in pygame.event.get():
+            if evt.type == KEYDOWN:
+                screen.fill((250,250,250))
+                display_prompt(name)
+                if evt.key == K_BACKSPACE:
+                    prompt = prompt[:-1]
+                elif evt.key == K_RETURN:
+                    check = False
+                else:
+                    prompt += evt.unicode
+            elif evt.type == QUIT:
+                return
+        block = font.render("Ever have I ever... " + prompt, True, (blue))
+        rect = block.get_rect()
+        rect.center = screen.get_rect().center
+        screen.blit(block, rect)
+        pygame.display.flip()
+    return prompt
+
+
+def display_answers(prompt, name):
+    text = font.render(name + "! Have you ever " + prompt + "?", True, blue, white) 
+    textRect = text.get_rect()  
+    textRect.center = (x // 2, y // 2.5)
+    screen.fill(white) 
+    screen.blit(text, textRect)
+    pygame.display.update()
+
+def get_answers(prompt):
+    answers = [0] * num
+    for i in range(num):
+        display_answers(prompt, names[i])
+        check = True
+        while check:
+            for evt in pygame.event.get():
+                if evt.type == KEYDOWN:
+                    screen.fill((250,250,250))
+                    display_answers(prompt, names[i])
+                    if evt.key == K_t:
+                        answers[i] = 1
+                        check = False
+                    elif evt.key == K_f:
+                        answers[i] = 0
+                        check = False
+                elif evt.type == QUIT:
+                    return
+            
+    return answers
+
+    
+    
+### MAIN
+num = get_num_players()
+names = get_names()
+for i in range(3):
+    for name in names:
+        prompt = get_question(name)
+        answers = get_answers(prompt)
+        print(answers)
         
-
-
-print(get_names())
-names_display()
-    
-    
 
 
 
