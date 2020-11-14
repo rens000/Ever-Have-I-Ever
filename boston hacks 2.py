@@ -16,20 +16,24 @@ screen = pygame.display.set_mode((x, y))
 pygame.display.set_caption('Ever Have I Ever') 
 font = pygame.font.Font('freesansbold.ttf', 35)
 
-def get_num_players():
+def display_question():
     text = font.render('How many players do you have?', True, blue, white) 
     textRect = text.get_rect()  
     textRect.center = (x // 2, y // 2.5)
-
     screen.fill(white) 
     screen.blit(text, textRect)
     pygame.display.update()
+    
 
+def get_num_players():
+    display_question()
     num = ''
     check = True
-    while True:
+    while check:
         for evt in pygame.event.get():
             if evt.type == KEYDOWN:
+                screen.fill((250,250,250))
+                display_question()
                 if evt.key == K_BACKSPACE:
                     num = num[:-1]
                 elif evt.key == K_RETURN:
@@ -38,16 +42,21 @@ def get_num_players():
                     num += evt.unicode
             elif evt.type == QUIT:
                 return
-        #screen.fill((250,250,250))
         block = font.render(num, True, (blue))
         rect = block.get_rect()
         rect.center = screen.get_rect().center
         screen.blit(block, rect)
         pygame.display.flip()
-    print(num)
+    return num
+
+def get_names():
+    
+    screen.fill(white)
+    pygame.display.update()
 
 
-
+    
+    
 
 get_num_players()
 
