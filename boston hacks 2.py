@@ -182,6 +182,7 @@ def get_a(prompt, i):
 
         
 def get_answers(prompt):
+    global persons
     answers = [0] * len(persons)
     for i in range(len(persons)):
         a = ""
@@ -189,9 +190,11 @@ def get_answers(prompt):
             a = get_a(prompt,i)
             if a in false:
                 persons[i].points -= 1
+    persons_copy = persons[:]
     for person in persons:
         if person.points <= 0:
-            persons.remove(person)  
+            persons_copy.remove(person)
+    persons = persons_copy
     return answers
 
 
