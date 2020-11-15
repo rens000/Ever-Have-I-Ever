@@ -82,7 +82,7 @@ def get_names_question(player_number):
         rect.center = screen.get_rect().center
         screen.blit(block, rect)
         pygame.display.flip()
-    persons.append(Person(num, 5))
+    persons.append(Person(num, 2))
     return num
 
     text = font.render("What is your name?", True, blue, white) 
@@ -153,15 +153,15 @@ def display_answers(prompt, name, names):
     pygame.display.update()
 
 def get_answers(prompt):
-    answers = [0] * num
-    for i in range(num):
-        display_answers(prompt, names[i], names)
+    answers = [0] * len(persons)
+    for i in range(len(persons)):
+        display_answers(prompt, persons[i].name, names)
         check = True
         while check:
             for evt in pygame.event.get():
                 if evt.type == KEYDOWN:
                     screen.fill((250,250,250))
-                    display_answers(prompt, names[i], names)
+                    display_answers(prompt, persons[i].name, names)
                     if evt.key == K_t:
                         answers[i] = 1
                         check = False
@@ -171,7 +171,9 @@ def get_answers(prompt):
                         check = False
                 elif evt.type == QUIT:
                     return
-            
+    for person in persons:
+        if person.points <= 0:
+            persons.remove(person)        
     return answers
 
 
@@ -185,12 +187,24 @@ def print_name(person, x_name, y_name):
 
 
 def display_names():
-    screen.fill(white) 
     x_name = x/10
     y_name = y / 10
+    
     for person in persons:
         print_name(person, x_name, y_name)
-        x_name += x/len(persons) 
+        x_name += x/len(persons)
+
+
+
+def display_winner():
+    screen.fill(white)
+    pygame.display.update()
+    font = pygame.font.Font('freesansbold.ttf', 50)
+    text = font.render("Congratulations " + persons[0].name, True, blue, white) 
+    textRect = text.get_rect()  
+    textRect.center = (x//2, y//2)
+    screen.blit(text, textRect)
+    pygame.display.update()
 
 class Person:
     def __init__(self, name, points):
@@ -203,15 +217,15 @@ class Person:
 num = get_num_players()
 names = get_names()
 
-for i in range(3):
-    for name in names:
-        prompt = get_question(name)
+while len(persons) > 1:
+    for person in persons:
+        prompt = get_question(person.name)
         answers = get_answers(prompt)
         print(answers)
 
 
 
-
+display_winner()
 
 
 
