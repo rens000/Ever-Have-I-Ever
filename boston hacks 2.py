@@ -107,40 +107,24 @@ def get_names():
     return list_of_names
 
 
-<<<<<<< HEAD
-def display_prompt(name, names):
-    text = font.render("It's your turn " + name + "!", True, blue, white) 
-    textRect = text.get_rect()  
-    textRect.center = (x // 2, y // 2.5)
-    screen.fill(white)
-    display_names()
-=======
+
 def display_prompt(name):
     text = font.render("It's your turn " + name + "!", True, blue, white) 
     textRect = text.get_rect()  
     textRect.center = (x // 2, y // 2.5)
     screen.fill(white) 
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
     screen.blit(text, textRect)
     pygame.display.update()
     
 def get_question(name):
-<<<<<<< HEAD
-    display_prompt(name, names)
-=======
     display_prompt(name)
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
     prompt = ""
     check = True
     while check:
         for evt in pygame.event.get():
             if evt.type == KEYDOWN:
                 screen.fill((250,250,250))
-<<<<<<< HEAD
-                display_prompt(name, names)
-=======
                 display_prompt(name)
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
                 if evt.key == K_BACKSPACE:
                     prompt = prompt[:-1]
                 elif evt.key == K_RETURN:
@@ -155,7 +139,7 @@ def get_question(name):
         screen.blit(block, rect)
         pygame.display.flip()
     return prompt
-<<<<<<< HEAD
+
 
 
 def display_answers(prompt, name, names):
@@ -207,9 +191,6 @@ def display_names():
     for person in persons:
         print_name(person, x_name, y_name)
         x_name += x/len(persons) 
-        
-=======
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
 
 class Person:
     def __init__(self, name, points):
@@ -217,8 +198,6 @@ class Person:
         self.points = points
 
 
-<<<<<<< HEAD
-=======
 def display_answers(prompt, name):
     text = font.render(name + "! Have you ever " + prompt + "?", True, blue, white) 
     textRect = text.get_rect()  
@@ -248,25 +227,16 @@ def get_answers(prompt):
             
     return answers
 
-    
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
-    
+
 ### MAIN
 num = get_num_players()
 names = get_names()
-<<<<<<< HEAD
 
-=======
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
 for i in range(3):
     for name in names:
         prompt = get_question(name)
         answers = get_answers(prompt)
         print(answers)
-<<<<<<< HEAD
-=======
-        
->>>>>>> 7ac6776e26c0174e34210101663454a1cb03d788
 
 
 
