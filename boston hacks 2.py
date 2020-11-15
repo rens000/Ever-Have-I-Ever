@@ -3,6 +3,9 @@ from pygame.locals import *
 import time
 
 
+true = ["yeah", "yes", "y", "true", "t"]
+false = ["no", "n", "nope", "false", "f", "never"]
+
 pygame.init()
 
 white = (255, 255, 255) 
@@ -152,28 +155,40 @@ def display_answers(prompt, name, names):
     screen.blit(text, textRect)
     pygame.display.update()
 
+
+def get_a(prompt, i):
+    a = ""
+    display_answers(prompt, names[i], names)
+    check = True
+    while check:
+        for evt in pygame.event.get():
+            if evt.type == KEYDOWN:
+                screen.fill((250,250,250))
+                display_answers(prompt, names[i], names)
+                if evt.key == K_BACKSPACE:
+                    a = a[:-1]
+                elif evt.key == K_RETURN:
+                    check = False
+                else:
+                    a += evt.unicode
+            elif evt.type == QUIT:
+                return
+        block = font.render(a, True, (blue))
+        rect = block.get_rect()
+        rect.center = screen.get_rect().center
+        screen.blit(block, rect)
+        pygame.display.flip()
+    return a
+
+        
 def get_answers(prompt):
-    answers = [0] * len(persons)
-    for i in range(len(persons)):
-        display_answers(prompt, persons[i].name, names)
-        check = True
-        while check:
-            for evt in pygame.event.get():
-                if evt.type == KEYDOWN:
-                    screen.fill((250,250,250))
-                    display_answers(prompt, persons[i].name, names)
-                    if evt.key == K_t:
-                        answers[i] = 1
-                        check = False
-                    elif evt.key == K_f:
-                        answers[i] = 0
-                        persons[i].points -= 1
-                        check = False
-                elif evt.type == QUIT:
-                    return
-    for person in persons:
-        if person.points <= 0:
-            persons.remove(person)        
+    answers = [0] * num
+    for i in range(num):
+        a = ""
+        while (a not in true) and (a not in false):
+            a = get_a(prompt,i)
+            if a in false:
+                persons[i].points -= 1   
     return answers
 
 
