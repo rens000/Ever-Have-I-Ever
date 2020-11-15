@@ -112,7 +112,8 @@ def display_prompt(name):
     text = font.render("It's your turn " + name + "!", True, blue, white) 
     textRect = text.get_rect()  
     textRect.center = (x // 2, y // 2.5)
-    screen.fill(white) 
+    screen.fill(white)
+    display_names()
     screen.blit(text, textRect)
     pygame.display.update()
     
@@ -174,7 +175,6 @@ def get_answers(prompt):
     return answers
 
 
-
 def print_name(person, x_name, y_name):
     font = pygame.font.Font('freesansbold.ttf', 18)
     text = font.render(person.name + ": " + str(person.points), True, black, white) 
@@ -198,35 +198,6 @@ class Person:
         self.points = points
 
 
-def display_answers(prompt, name):
-    text = font.render(name + "! Have you ever " + prompt + "?", True, blue, white) 
-    textRect = text.get_rect()  
-    textRect.center = (x // 2, y // 2.5)
-    screen.fill(white) 
-    screen.blit(text, textRect)
-    pygame.display.update()
-
-def get_answers(prompt):
-    answers = [0] * num
-    for i in range(num):
-        display_answers(prompt, names[i])
-        check = True
-        while check:
-            for evt in pygame.event.get():
-                if evt.type == KEYDOWN:
-                    screen.fill((250,250,250))
-                    display_answers(prompt, names[i])
-                    if evt.key == K_t:
-                        answers[i] = 1
-                        check = False
-                    elif evt.key == K_f:
-                        answers[i] = 0
-                        check = False
-                elif evt.type == QUIT:
-                    return
-            
-    return answers
-
 
 ### MAIN
 num = get_num_players()
@@ -237,6 +208,12 @@ for i in range(3):
         prompt = get_question(name)
         answers = get_answers(prompt)
         print(answers)
+
+
+
+
+
+
 
 
 
