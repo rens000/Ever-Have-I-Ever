@@ -158,13 +158,13 @@ def display_answers(prompt, name, names):
 
 def get_a(prompt, i):
     a = ""
-    display_answers(prompt, names[i], names)
+    display_answers(prompt, persons[i].name, names)
     check = True
     while check:
         for evt in pygame.event.get():
             if evt.type == KEYDOWN:
                 screen.fill((250,250,250))
-                display_answers(prompt, names[i], names)
+                display_answers(prompt, persons[i].name, names)
                 if evt.key == K_BACKSPACE:
                     a = a[:-1]
                 elif evt.key == K_RETURN:
@@ -182,13 +182,16 @@ def get_a(prompt, i):
 
         
 def get_answers(prompt):
-    answers = [0] * num
-    for i in range(num):
+    answers = [0] * len(persons)
+    for i in range(len(persons)):
         a = ""
         while (a not in true) and (a not in false):
             a = get_a(prompt,i)
             if a in false:
-                persons[i].points -= 1   
+                persons[i].points -= 1
+    for person in persons:
+        if person.points <= 0:
+            persons.remove(person)  
     return answers
 
 
